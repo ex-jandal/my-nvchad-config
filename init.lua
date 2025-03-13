@@ -36,25 +36,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 local luasnip = require 'luasnip'
 luasnip.filetype_extend("vue", { "javascript", "html", "css" })
 
--- local dap = require('dap')
---
--- dap.adapters.node2 = {
---   type = 'executable',
---   command = 'node',
---   args = { os.getenv('HOME') .. '/vscode-node-debug2/out/src/nodeDebug.js' }
--- }
---
--- dap.configurations.javascript = {
---   {
---     type = 'node2',
---     request = 'launch',
---     program = '${file}',
---     cwd = vim.fn.getcwd(),
---     sourceMaps = true,
---     protocol = 'inspector'
---   }
--- }
-
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
