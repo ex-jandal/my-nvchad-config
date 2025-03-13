@@ -25,6 +25,12 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = { "vue", "javascript", "typescript", "html", "css" },
+  highlight = { enable = true }
+}
+
+
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
