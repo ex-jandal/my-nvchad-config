@@ -29,6 +29,8 @@ lspconfig.volar.setup {
   },
 }
 
+lspconfig.eslint.setup({})
+
 -- configuring single server, example: typescript
 -- lspconfig.ts_ls.setup {
 --   on_attach = nvlsp.on_attach,

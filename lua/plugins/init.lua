@@ -33,6 +33,7 @@ return {
         "python",
         "vue",
       },
+      highlight = { enable = true },
     },
   },
 
