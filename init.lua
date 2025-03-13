@@ -26,13 +26,6 @@ require("lazy").setup({
 }, lazy_config)
 
 -- for Vue.js 
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = { "*.vue", "*.js", "*.ts", "*.css", "*.json" },
-  callback = function()
-    vim.cmd("Prettier")
-  end
-})
-
 local luasnip = require 'luasnip'
 luasnip.filetype_extend("vue", { "javascript", "html", "css" })
 
