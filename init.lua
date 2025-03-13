@@ -29,9 +29,13 @@ require("lazy").setup({
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
+
 require "options"
 require "nvchad.autocmds"
 
 vim.schedule(function()
   require "mappings"
 end)
+
+vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { 0 }, { 0 })
+
