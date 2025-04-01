@@ -4,7 +4,7 @@ require("nvchad.configs.lspconfig").defaults()
 local lspconfig = require "lspconfig"
 
 -- EXAMPLE
-local servers = { "html", "cssls", "pyright", "texlab" ,"ts_ls", "vls"}
+local servers = { "html", "cssls", "pyright", "texlab" ,"ts_ls", "vls", "clangd", "intelephense"}
 local nvlsp = require "nvchad.configs.lspconfig"
 
 -- lsps with default config
@@ -24,6 +24,12 @@ lspconfig.volar.setup {
   init_options = {
     vue = {
       -- disable hybrid mode
+      hybridMode = false,
+    },
+    javascriptreact = {
+      hybridMode = false,
+    },
+    typescriptreact = {
       hybridMode = false,
     },
   },
