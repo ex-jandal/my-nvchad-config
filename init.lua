@@ -25,6 +25,7 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
+
 -- for Vue.js 
 local luasnip = require 'luasnip'
 luasnip.filetype_extend("vue", { "javascript", "html", "css" })
