@@ -82,15 +82,29 @@ local M = {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
 
-  -- {
-  --   "williamboman/mason.nvim",
-  --   opts = {
-  --     ensure_installed = {
-  --       "ts_ls",
-  --       -- other servers…
-  --     },
-  --   },
-  -- },
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "marksman",
+        "html",
+        "cssls",
+        "ts_ls",
+        "tailwindcss-language-server",
+        "svelte",
+        "vls",
+        "pyright",
+        "texlab",
+        "clangd",
+        "intelephense",
+        "nil_ls",
+        "dcm",
+        "jdtls",
+        "sqls",
+        "codelldb"
+      },
+    },
+  },
 
   {
     "lervag/vimtex",
