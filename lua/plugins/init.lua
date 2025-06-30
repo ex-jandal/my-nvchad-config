@@ -1,4 +1,4 @@
-return {
+local M = {
   {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
@@ -108,3 +108,10 @@ return {
     end,
   },
 }
+
+table.insert(M, require "plugins.rust_plugins")
+table.insert(M, require "plugins.dap_plugins")
+table.insert(M, require "plugins.snacks")
+table.insert(M, require "plugins.frontend_plugins")
+
+return M
