@@ -6,6 +6,7 @@ local options = {
     javascript = { "prettier" },
     typescript = { "prettier" },
     vue = { "prettier" },
+    svelte = { "prettier" },
     json = { "prettier" },
     yaml = { "prettier" },
     markdown = { "prettier" },

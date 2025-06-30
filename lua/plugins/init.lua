@@ -39,6 +39,7 @@ local M = {
         "rust",
         "python",
         "vue",
+        "svelte",
       },
       highlight = { enable = true },
     },
@@ -81,15 +82,15 @@ local M = {
     dependencies = { "nvim-lua/plenary.nvim" },
   },
 
-  {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "ts_ls",
-        -- other servers…
-      },
-    },
-  },
+  -- {
+  --   "williamboman/mason.nvim",
+  --   opts = {
+  --     ensure_installed = {
+  --       "ts_ls",
+  --       -- other servers…
+  --     },
+  --   },
+  -- },
 
   {
     "lervag/vimtex",
