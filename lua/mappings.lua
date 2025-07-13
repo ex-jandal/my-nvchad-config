@@ -38,14 +38,14 @@ map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", merge_opts { des
 map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", merge_opts { desc = "Debugger run last" })
 
 -- Don't yank on delete/change
-map("n", "d", '"_d', opts)
-map("n", "D", '"_D', opts)
-map("n", "c", '"_c', opts)
-map("n", "C", '"_C', opts)
-map("n", "x", '"_x', opts)
-map("n", "X", '"_X', opts)
-map("v", "d", '"_d', opts)
-map("v", "x", '"_x', opts)
+-- map("n", "d", '"_d', opts)
+-- map("n", "D", '"_D', opts)
+-- map("n", "c", '"_c', opts)
+-- map("n", "C", '"_C', opts)
+-- map("n", "x", '"_x', opts)
+-- map("n", "X", '"_X', opts)
+-- map("v", "d", '"_d', opts)
+-- map("v", "x", '"_x', opts)
 
 -- Reselect again when indenting with > or <
 map("v", ">", ">gv", opts)
@@ -76,3 +76,10 @@ map("n", "<Leader>cq", ":VimtexStop<CR>", { noremap = true, silent = true, desc 
 
 map("n", "<Leader>cc", "<CMD> w | silent ! latexmk -xelatex %<CR>", { noremap = true, silent = true, desc = "Vimtex Compile" })
 
+vim.keymap.set('n', '<leader>rr', ':RunCode<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>rf', ':RunFile<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>rft', ':RunFile tab<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>rp', ':RunProject<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>rc', ':RunClose<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>crf', ':CRFiletype<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>crp', ':CRProjects<CR>', { noremap = true, silent = false })

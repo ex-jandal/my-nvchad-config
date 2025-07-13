@@ -58,6 +58,8 @@ local M = {
 
   {'nvim-java/nvim-java'},
 
+  {"CRAG666/code_runner.nvim", config = true},
+
   {
     'nvim-flutter/flutter-tools.nvim',
     lazy = false,
@@ -122,6 +124,95 @@ local M = {
 
     end,
   },
+
+  {
+    "patrickpichler/hovercraft.nvim",
+
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+    },
+
+    -- this is the default config and can be skipped
+    opts = function()
+      return {
+        providers = {
+          providers = {
+            {
+              "LSP",
+              require("hovercraft.provider.lsp.hover").new(),
+            },
+            {
+              "Man",
+              require("hovercraft.provider.man").new(),
+            },
+            {
+              "Dictionary",
+              require("hovercraft.provider.dictionary").new(),
+            },
+          },
+        },
+
+        window = {
+          border = "single",
+
+          -- enable this if you are a user of the MeanderingProgrammer/render-markdown.nvim plugin
+          render_markdown_compat_mode = true,
+        },
+
+        keys = {
+          {
+            "<C-u>",
+            function()
+              require("hovercraft").scroll { delta = -4 }
+            end,
+          },
+          {
+            "<C-d>",
+            function()
+              require("hovercraft").scroll { delta = 4 }
+            end,
+          },
+          {
+            "<TAB>",
+            function()
+              require("hovercraft").hover_next()
+            end,
+          },
+          {
+            "<S-TAB>",
+            function()
+              require("hovercraft").hover_next { step = -1 }
+            end,
+          },
+        },
+      }
+    end,
+
+    keys = {
+      {
+        "K",
+        function()
+          local hovercraft = require "hovercraft"
+
+          if hovercraft.is_visible() then
+            hovercraft.enter_popup()
+          else
+            hovercraft.hover()
+          end
+        end,
+      },
+    },
+  },
+
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+    ---@module 'render-markdown'
+    ---@type render.md.UserConfig
+    opts = {},
+  }
 }
 
 table.insert(M, require "plugins.rust_plugins")

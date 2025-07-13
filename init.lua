@@ -25,6 +25,77 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
+require('code_runner').setup({
+  filetype = {
+    java = {
+      "cd $dir &&",
+      "./gradlew run -q"
+      -- "javac $fileName && java $fileNameWithoutExt",
+
+      -- "cd $dir && mvn compile exec:java"
+
+      -- "mvn clean install && java -cp target/${basename $PWD}.jar com.example.App"
+    },
+    python = "python3 -u",
+    typescript = "deno run",
+    rust = {
+      "cd $dir &&",
+      "rustc $fileName &&",
+      "$dir/$fileNameWithoutExt"
+    },
+    c = function(...)
+      c_base = {
+        "cd $dir &&",
+        "gcc $fileName -o",
+        "/tmp/$fileNameWithoutExt",
+      }
+      local c_exec = {
+        "&& /tmp/$fileNameWithoutExt &&",
+        "rm /tmp/$fileNameWithoutExt",
+      }
+      vim.ui.input({ prompt = "Add more args:" }, function(input)
+        c_base[4] = input
+        vim.print(vim.tbl_extend("force", c_base, c_exec))
+        require("code_runner.commands").run_from_fn(vim.list_extend(c_base, c_exec))
+      end)
+    end,
+  },
+})
+
+-- require("cmp").setup({
+--   window = {
+--     completion = {
+--       border = "rounded"
+--     },
+--     documentation = {
+--       border = "rounded"
+--     }
+--   }
+-- })
+require('hovercraft').hover({ current_provider = "LSP" })
+require('hovercraft.provider.man')
+require('hovercraft.provider.github.user')
+require('hovercraft.provider.git.blame')
+
+require('render-markdown').enable()
+
+ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+   vim.lsp.handlers.hover, {
+     -- Use a sharp border with `FloatBorder` highlights
+     border = "single",
+     -- add the title in hover float window
+     title = "hover"
+   }
+ )
+
+vim.api.nvim_create_autocmd("BufReadPre", {
+    pattern = { "*.jpg", "*.png", "*.svg", "*.gif", "*.mp4", "*.mkv", "*.webp" },  -- or a specific pattern like "*.rs"
+    callback = function()
+        print("Buffer is about to be read")
+        require('telescope').setup{}
+    end,
+})
+
 -- vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { 0 }, { 0 })
 -- vim.wo.relativenumber = true
 vim.opt.smartindent = true -- Smart indentation for new lines
