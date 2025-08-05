@@ -13,6 +13,26 @@ local M = {
     end,
   },
 
+  {
+    "christoomey/vim-tmux-navigator",
+    lazy = false,
+    cmd = {
+      "TmuxNavigateLeft",
+      "TmuxNavigateDown",
+      "TmuxNavigateUp",
+      "TmuxNavigateRight",
+      "TmuxNavigatePrevious",
+      "TmuxNavigatorProcessList",
+    },
+    keys = {
+      { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+      { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+      { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+      { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+      { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+    },
+  },
+
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
@@ -35,11 +55,15 @@ local M = {
         "vimdoc",
         "html",
         "css",
+        "scss",
+        "javascript",
+        "typescript",
         "markdown",
         "rust",
         "python",
         "vue",
         "svelte",
+        "java",
       },
       highlight = { enable = true },
     },
@@ -48,15 +72,24 @@ local M = {
   {
     'derektata/lorem.nvim',
     config = function()
-        require('lorem').opts {
-            sentence_length = "medium",
-            comma_chance = 0.2,
-            max_commas = 2,
-        }
+      require('lorem').opts {
+        sentence_length = "medium",
+        comma_chance = 0.2,
+        max_commas = 2,
+      }
     end,
   },
 
-  {'nvim-java/nvim-java'},
+  {
+    'nvim-java/nvim-java',
+    lazy = false,
+    root_markers = {
+      'pom.xml',
+      'mvnw',
+      'gradlew',
+      '.git',
+    },
+  },
 
   {"CRAG666/code_runner.nvim", config = true},
 
@@ -71,17 +104,20 @@ local M = {
   },
 
   {
-    "christoomey/vim-tmux-navigator",
-    lazy = false,
-  },
-
-  {
     "folke/todo-comments.nvim",
     lazy = false,
     config = function()
       require("todo-comments").setup()
     end,
     dependencies = { "nvim-lua/plenary.nvim" },
+  },
+
+  {
+    "3rd/image.nvim",
+    build = false, -- so that it doesn't build the rock https://github.com/3rd/image.nvim/issues/91#issuecomment-2453430239
+    opts = {
+        processor = "magick_cli",
+    }
   },
 
   {
@@ -97,6 +133,7 @@ local M = {
         "vls",
         "pyright",
         "texlab",
+        "rust-analyzer",
         "clangd",
         "intelephense",
         "nil_ls",
@@ -204,20 +241,12 @@ local M = {
     },
   },
 
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
-    -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
-    ---@module 'render-markdown'
-    ---@type render.md.UserConfig
-    opts = {},
-  }
 }
 
 table.insert(M, require "plugins.rust_plugins")
 table.insert(M, require "plugins.dap_plugins")
 table.insert(M, require "plugins.snacks")
 table.insert(M, require "plugins.frontend_plugins")
+-- table.insert(M, require "markdown")
 
 return M

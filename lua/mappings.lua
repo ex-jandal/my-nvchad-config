@@ -69,6 +69,9 @@ map("n", "gr", vim.lsp.buf.references, { noremap = true, silent = true, desc = "
 -- open up the full error
 map("n", "E", vim.diagnostic.open_float)
 
+map("n", "<leader>mr", "<cmd> lua require('render-markdown').toggle()<CR>", merge_opts { desc = "Rander Markdown" })
+map("n", "<leader>jr", "<cmd> lua require('java').runner.built_in.run_app({})<CR>", merge_opts { desc = "Run Java" })
+
 
 -- map("n", "<Leader>cc", ":VimtexCompile<CR>", { noremap = true, silent = true, desc = "Compile PDF" })
 map("n", "<Leader>cv", ":VimtexView<CR>", { noremap = true, silent = true, desc = "View PDF" })
@@ -83,3 +86,15 @@ vim.keymap.set('n', '<leader>rp', ':RunProject<CR>', { noremap = true, silent = 
 vim.keymap.set('n', '<leader>rc', ':RunClose<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>crf', ':CRFiletype<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>crp', ':CRProjects<CR>', { noremap = true, silent = false })
+
+
+
+-- Disable tmux-navigator's default key mappings
+vim.g.tmux_navigator_no_mappings = 1
+
+-- Custom key mappings for tmux navigation
+vim.keymap.set('n', '<C-h>', ':<C-U>TmuxNavigateLeft<CR>', { silent = true })
+vim.keymap.set('n', '<C-j>', ':<C-U>TmuxNavigateDown<CR>', { silent = true })
+vim.keymap.set('n', '<C-k>', ':<C-U>TmuxNavigateUp<CR>', { silent = true })
+vim.keymap.set('n', '<C-l>', ':<C-U>TmuxNavigateRight<CR>', { silent = true })
+vim.keymap.set('n', '<C-\\>', ':<C-U>TmuxNavigatePrevious<CR>', { silent = true })

@@ -29,7 +29,7 @@ require('code_runner').setup({
   filetype = {
     java = {
       "cd $dir &&",
-      "./gradlew run -q"
+      "gradle run"
       -- "javac $fileName && java $fileNameWithoutExt",
 
       -- "cd $dir && mvn compile exec:java"
@@ -62,22 +62,12 @@ require('code_runner').setup({
   },
 })
 
--- require("cmp").setup({
---   window = {
---     completion = {
---       border = "rounded"
---     },
---     documentation = {
---       border = "rounded"
---     }
---   }
--- })
 require('hovercraft').hover({ current_provider = "LSP" })
 require('hovercraft.provider.man')
 require('hovercraft.provider.github.user')
 require('hovercraft.provider.git.blame')
 
-require('render-markdown').enable()
+require('livepreview.config').set()
 
  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
    vim.lsp.handlers.hover, {
@@ -88,16 +78,11 @@ require('render-markdown').enable()
    }
  )
 
-vim.api.nvim_create_autocmd("BufReadPre", {
-    pattern = { "*.jpg", "*.png", "*.svg", "*.gif", "*.mp4", "*.mkv", "*.webp" },  -- or a specific pattern like "*.rs"
-    callback = function()
-        print("Buffer is about to be read")
-        require('telescope').setup{}
-    end,
-})
+-- load theme
+dofile(vim.g.base46_cache .. "defaults")
+dofile(vim.g.base46_cache .. "statusline")
 
--- vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { 0 }, { 0 })
--- vim.wo.relativenumber = true
+
 vim.opt.smartindent = true -- Smart indentation for new lines
 
 -- for vue.js 
@@ -111,12 +96,42 @@ require('lorem').opts {
     max_commas = 2  -- maximum 2 commas per sentence
 }
 
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+      underline = true,
+      virtual_text = {
+          spacing = 5,
+          severity_limit = 'Warning',
+      },
+      update_in_insert = true,
+  }
+)
+
+require('nvim-ts-autotag').setup({
+  opts = {
+    -- Defaults
+    enable_close = true, -- Auto close tags
+    enable_rename = true, -- Auto rename pairs of tags
+    enable_close_on_slash = false -- Auto close on trailing </
+  },
+  -- Also override individual filetype configs, these take priority.
+  -- Empty by default, useful if one of the "opts" global settings
+  -- doesn't work well in a specific filetype
+  -- per_filetype = {
+  --   ["html"] = {
+  --     enable_close = false
+  --   }
+  -- }
+})
+
 -- load theme
 dofile(vim.g.base46_cache .. "defaults")
 dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
 require "autocmds"
+require("markdown")
 
 vim.schedule(function()
   require "mappings"
