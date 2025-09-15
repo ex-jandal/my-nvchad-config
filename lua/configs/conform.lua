@@ -10,7 +10,8 @@ local options = {
     json = { "prettier" },
     yaml = { "prettier" },
     markdown = { "prettier" },
-    rust = { "rustfmt" }
+    rust = { "rustfmt" },
+    assembly = { "asmfmt" }
   },
 
   -- format_on_save = {

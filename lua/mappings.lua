@@ -37,6 +37,10 @@ map(
 map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", merge_opts { desc = "Debugger reset" })
 map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", merge_opts { desc = "Debugger run last" })
 
+-- for codesnap
+-- map("v", "<leader>cc", "<cmd>CodeSnap<cr>", merge_opts { desc = "Save selected code snapshot into clipboard" })
+-- map("v", "<leader>cs", "<cmd>CodeSnapSave<cr>", merge_opts { desc = "Save selected code snapshot in ~/Pictures" })
+
 -- Don't yank on delete/change
 -- map("n", "d", '"_d', opts)
 -- map("n", "D", '"_D', opts)
@@ -66,6 +70,12 @@ map("n", "gi", vim.lsp.buf.implementation, { noremap = true, silent = true, desc
 map("n", "gr", vim.lsp.buf.references, { noremap = true, silent = true, desc = "goto references" })
 -- map("n", "<Leader>rn", vim.lsp.buf.rename, { noremap = true, silent = true, desc = "rename" })
 
+
+-- mappings.lua
+
+map("n", "<leader>e", function() Snacks.explorer() end, merge_opts { desc = "File Explorer" })
+map("n", "<C-n>", function() Snacks.explorer() end,  merge_opts { desc = "File Explorer" })
+
 -- open up the full error
 map("n", "E", vim.diagnostic.open_float)
 
@@ -87,6 +97,7 @@ vim.keymap.set('n', '<leader>rc', ':RunClose<CR>', { noremap = true, silent = fa
 vim.keymap.set('n', '<leader>crf', ':CRFiletype<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>crp', ':CRProjects<CR>', { noremap = true, silent = false })
 
+map('n', '<leader>dd', ':DBUIToggle<CR>', { desc = "DataBase UI"})
 
 
 -- Disable tmux-navigator's default key mappings

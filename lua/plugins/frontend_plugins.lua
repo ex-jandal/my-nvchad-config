@@ -17,4 +17,14 @@ return {
       },
     },
   },
+  {
+    "JoosepAlviste/nvim-ts-context-commentstring",
+    lazy = true,
+    opts = {
+      enable_autocmd = false,
+    },
+    config = function()
+      require('ts_context_commentstring').setup()
+    end,
+  },
 }

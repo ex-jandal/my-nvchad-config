@@ -64,6 +64,11 @@ local M = {
         "vue",
         "svelte",
         "java",
+        "php",
+        "c_sharp",
+        "sql",
+        "http",
+        "graphql"
       },
       highlight = { enable = true },
     },
@@ -83,13 +88,18 @@ local M = {
   {
     'nvim-java/nvim-java',
     lazy = false,
-    root_markers = {
-      'pom.xml',
-      'mvnw',
-      'gradlew',
-      '.git',
-    },
   },
+
+
+  -- {
+  --   'mfussenegger/nvim-jdtls',
+  --   lazy = false,
+  --   config = {
+  --     name = "jdtls",
+  --     -- cmd = { "jdtls" },
+  --     root_dir = vim.fs.root(0, { 'gradlew', ',git', 'mvnw' })
+  --   },
+  -- },
 
   {"CRAG666/code_runner.nvim", config = true},
 
@@ -126,6 +136,7 @@ local M = {
       ensure_installed = {
         "marksman",
         "html",
+        "shellcheck",
         "cssls",
         "ts_ls",
         "tailwindcss-language-server",

@@ -11,7 +11,7 @@ local M = {
           },
         },
       }
-      require("cmp").setup.buffer {
+      require("lua.plugins.acmp").setup.buffer {
         sources = { { name = "crates" } },
       }
     end,
@@ -39,6 +39,14 @@ local M = {
       }
     end,
     ["rust-analyzer"] = {
+      cmd = vim.lsp.rpc.connect("127.0.0.1", 27631), -- use ra-multiplex instead of rust-analyzer
+      init_options ={
+        lspMux = {
+          version = "1",
+          method = "connect",
+          server = "rust-analyzer",
+        },
+      },
       cargo = {
         imports = {
           granularity = {
@@ -57,6 +65,11 @@ local M = {
       },
       procMacro = {
         enable = true,
+        ignored = {
+          leptos_macro = {
+            "server",
+          },
+        },
       },
       checkOnType = {
         enable = true,
@@ -67,6 +80,11 @@ local M = {
         },
       },
     },
+  },
+
+  {
+    "willothy/leptos.nvim",
+    event = "VeryLazy"
   },
 }
 

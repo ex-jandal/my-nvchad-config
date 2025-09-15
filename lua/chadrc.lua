@@ -7,7 +7,8 @@ local M = {}
 
 M.base46 = {
 	theme = "gruvbox",
-  transparency = true
+  transparency = true,
+  hl_override = require("highlights").override,
 
 	-- hl_override = {
 	-- 	Comment = { italic = true },
@@ -17,11 +18,21 @@ M.base46 = {
 
 M.ui = {
   cmp = {
-    style = "default"
+    style = "default",
   },
   statusline = {
-    theme = "default",
+    -- enabled = false,
+    theme = "minimal",
     separator_style = "round",
+    -- order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "lsp", "cwd", "xyz", "abc" },
+    -- modules = {
+    --  abc = function()
+    --    return "hi"
+    --  end,
+    --
+    --  xyz =  "hi",
+    --  f = "%F"
+    -- }
   },
 }
 

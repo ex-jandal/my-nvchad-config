@@ -136,3 +136,5 @@ require("markdown")
 vim.schedule(function()
   require "mappings"
 end)
+
+require "custom-cmp"
