@@ -1,189 +1,145 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "marksman", "html", "cssls", "ts_ls", "tailwindcss-language-server", "svelte", "pyright", "texlab", "taplo", "clangd", "intelephense", "nil_ls", "dcm", "bashls", "shellcheck", "fish_lsp", "asm-lsp", "tailwindcss", "omnisharp", "dockerls", "docker_compose_language_service"}
+local servers = { "marksman", "html", "cssls", "ts_ls", "vue-language-server", "tailwindcss-language-server", "svelte", "pyright", "texlab", "taplo", "clangd", "intelephense", "laravel-ls", "dcm", "bashls", "shellcheck", "fish_lsp", "asm-lsp", "tailwindcss", "omnisharp", "dockerls", "docker_compose_language_service", "nil_ls" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers 
 
-local lspconfig = require "lspconfig"
+------------------------------------------------------------------------------------
+-- all of this is to make vue language server work with typescript language server
+------------------------------------------------------------------------------------
+local vue_language_server_path = vim.fn.expand("~/.local/share/pnpm/global/5/node_modules/@vue/language-server")
+local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+local vue_plugin = {
+  name = '@vue/typescript-plugin',
+  location = vue_language_server_path,
+  languages = { 'vue' },
+  configNamespace = 'typescript',
+}
+local vtsls_config = {
+  settings = {
+    vtsls = {
+      tsserver = {
+        globalPlugins = {
+          vue_plugin,
+        },
+      },
+    },
+  },
+  filetypes = tsserver_filetypes,
+}
 
-require('lspconfig').ts_ls.setup({})
-lspconfig.vuels.setup{
-  -- add filetypes for typescript, javascript and vue
-  filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
+local ts_ls_config = {
   init_options = {
-    vue = {
-      -- disable hybrid mode
-      hybridMode = false,
-    },
-    javascriptreact = {
-      hybridMode = false,
-    },
-    typescriptreact = {
-      hybridMode = false,
+    vue = { hybridMode = false },
+    javascriptreact = { hybridMode = false },
+    typescriptreact = { hybridMode = false },
+
+    plugins = {
+      vue_plugin,
     },
   },
+  filetypes = tsserver_filetypes,
 }
--- lspconfig.volar.setup {
---   -- add filetypes for typescript, javascript and vue
---   filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
---   init_options = {
---     vue = {
---       -- disable hybrid mode
---       hybridMode = false,
---     },
---     javascriptreact = {
---       hybridMode = false,
---     },
---     typescriptreact = {
---       hybridMode = false,
---     },
---   },
--- }
 
--- lspconfig.ts_ls.setup {
---     -- Initial options for the TypeScript language server
---     init_options = {
---         plugins = {
---             {
---                 -- Name of the TypeScript plugin for Vue
---                 name = '@vue/typescript-plugin',
---
---                 -- Location of the Vue language server module (path defined in step 1)
---                 location = "~/.local/share/nvim/mason/bin/vls",
---
---                 -- Specify the languages the plugin applies to (in this case, Vue files)
---                 languages = { 'vue' },
---             },
---         },
---     },
---
---     -- Specify the file types that will trigger the TypeScript language server
---     filetypes = {
---         'typescript',          -- TypeScript files (.ts)
---         'javascript',          -- JavaScript files (.js)
---         'javascriptreact',     -- React files with JavaScript (.jsx)
---         'typescriptreact',     -- React files with TypeScript (.tsx)
---         'vue'                  -- Vue.js single-file components (.vue)
---     },
--- }
+-- If you are on most recent `nvim-lspconfig`
+-- local vue_ls_config = {}
+-- If you are not on most recent `nvim-lspconfig` or you want to override
+local vue_ls_config = {
+  on_init = function(client)
+    client.handlers['tsserver/request'] = function(_, result, context)
+      local ts_clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'ts_ls' })
+      local vtsls_clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
+      local clients = {}
 
-require('java').setup({
-  root_markers = {
-    'settings.gradle',
-    'settings.gradle.kts',
-    'pom.xml',
-    'build.gradle',
-    'mvnw',
-    'gradlew',
-    'build.gradle',
-    'build.gradle.kts',
-    '.git',
-  },
-  java_test = {
-    -- use junit for testing
-    -- you can also use other test runners here like 'testng'
-    runner = 'junit',
-    version = '0.43.1',
-  },
-  java_debug_adapter = {
-    enable = true,
-    -- version = '0.58.1',
-  },
-  spring_boot_tools = {
-    enable = false,
-    -- version = '1.55.1',
-  },
-  -- mason = {
-  -- -- These mason registries will be prepended to the existing mason
-  -- -- configuration
-  -- registries = {
-  --   'github:nvim-java/mason-registry',
+      vim.list_extend(clients, ts_clients)
+      vim.list_extend(clients, vtsls_clients)
+
+      if #clients == 0 then
+        vim.notify('Could not find `vtsls` or `ts_ls` lsp client, `vue_ls` would not work without it.', vim.log.levels.ERROR)
+        return
+      end
+      local ts_client = clients[1]
+
+      local param = unpack(result)
+      local id, command, payload = unpack(param)
+      ts_client:exec_cmd({
+        title = 'vue_request_forward', -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
+        command = 'typescript.tsserverRequest',
+        arguments = {
+          command,
+          payload,
+        },
+      }, { bufnr = context.bufnr }, function(_, r)
+          local response = r and r.body
+          -- TODO: handle error or response nil here, e.g. logging
+          -- NOTE: Do NOT return if there's an error or no response, just return nil back to the vue_ls to prevent memory leak
+          local response_data = { { id, response } }
+
+          ---@diagnostic disable-next-line: param-type-mismatch
+          client:notify('tsserver/response', response_data)
+        end)
+    end
+  end,
+}
+-- nvim 0.11 or above
+vim.lsp.config('vtsls', vtsls_config)
+vim.lsp.config('vue_ls', vue_ls_config)
+vim.lsp.config('ts_ls', ts_ls_config)
+vim.lsp.enable({'ts_ls', 'vue_ls'}) -- If using `ts_ls` replace `vtsls` to `ts_ls`
+
+------------------------------------------------------------------------------------
+-- the end of vue language server with typescript language server config
+------------------------------------------------------------------------------------
+
+vim.lsp.config['laravel-ls'] = {
+  cmd = { "laravel-ls" },
+  filetypes = { "php", "blade" },
+  root_markers = { "artisan" },
+}
+vim.lsp.enable('laravel-ls')
+
+vim.lsp.config['fish_lsp'] = {
+  cmd = { "fish-lsp", "start" },
+  filetypes = { "fish" },
+}
+vim.lsp.enable('fish_lsp')
+
+
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics,
+  {
+      underline = true,
+      virtual_text = {
+          spacing = 5,
+          severity_limit = 'Warning',
+      },
+      update_in_insert = true,
+  }
+)
+
+vim.lsp.config['asm_lsp'] = {
+  cmd = { "asm-lsp" },
+  filetypes = { "asm", "s", "S", "vmasm", "nasm" },
+  -- settings = {
+  --   asm = {
+  --     syntax = "nasm",
+  --     architecture = "x86_64", -- important: switch from 16-bit to 64-bit
+  --   },
   -- },
-
-})
-
--- lspconfig.jdtls.setup({
---   root_dir = vim.fs.dirname(vim.fs.find({
---     'settings.gradle',
---     'settings.gradle.kts',
---     'pom.xml',
---     'build.gradle',
---     'mvnw',
---     'gradlew',
---     'build.gradle',
---     'build.gradle.kts',
---     '.git',
---   }, { upward = true })[1]),
--- })
-
-local root_dir = vim.fs.dirname(vim.fs.find({
-  "settings.gradle",
-  "settings.gradle.kts",
-  "pom.xml",
-  "build.gradle",
-  "mvnw",
-  "gradlew",
-  ".git",
-}, { upward = true })[1])
-
--- Workspace directory for jdtls
-local workspace_dir = vim.fn.stdpath("data") .. "/jdtls-workspace/" .. vim.fn.fnamemodify(root_dir, ":p:h:t")
-
-local config = {
-  cmd = {
-    "jdtls",  -- Make sure jdtls is in PATH (via Mason or system)
-    "-data", workspace_dir,
-  },
-  root_dir = root_dir,
 }
+vim.lsp.enable('asm_lsp')
 
-lspconfig.jdtls.setup(config)
-
--- lspconfig.sqls.setup({
---   cmd = { "sqls" },
---   -- on_attach = function(client, bufnr)
---   --   require('sqls').on_attach(client, bufnr) -- require sqls.nvim
---   -- end
---   --
---   settings = {
---     sqls = {
---       connections = {
---         {
---           driver = 'mysql',
---           dataSourceName = 'sultan:sultan@tcp(127.0.0.1:3306)/neo',
---         },
---         -- {
---         --   driver = 'postgresql',
---         --   dataSourceName = 'host=127.0.0.1 port=15432 user=postgres password=mysecretpassword1234 dbname=dvdrental sslmode=disable',
---         -- },
---       },
---     },
---   },
--- })
-
--- lspconfig.asm_lsp.setup{
---     cmd = { "asm-lsp" },
---     filetypes = { "asm", "s", "S" },
---     root_dir = lspconfig.util.root_pattern(".git", "."),
---     single_file_support = true,
--- }
-
--- require'lspconfig'.rust_analyzer.setup {
---   cmd = vim.lsp.rpc.connect("127.0.0.1", 27631),
---   -- When using unix domain sockets, use something like:
---   --cmd = vim.lsp.rpc.domain_socket_connect("/path/to/ra-multiplex.sock"),
---   init_options = {
---     lspMux = {
---       version = "1",
---       method = "connect",
---       server = "rust-analyzer",
---     },
---   },
--- }
-
--- vim.lsp.config.bashls = {
---   cmd = { '~/.local/share/nvim/mason/bin/bash-language-server', 'start' },
---   filetypes = { 'bash', 'sh', "zsh" }
--- }
--- vim.lsp.enable 'bashls'
+vim.lsp.config['pyright'] = {
+  settings = {
+    python = {
+      pythonPath = "/home/abu_jandal/.local/share/uv/tools/manim/bin/python",
+      -- analysis = {
+      --   typeCheckingMode = "off",  -- options: off, basic, strict
+      --   autoSearchPaths = true,
+      --   useLibraryCodeForTypes = true,
+      --   diagnosticMode = "workspace",  -- options: openFilesOnly, workspace
+      -- },
+    },
+  },
+}

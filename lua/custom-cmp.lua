@@ -7,11 +7,13 @@ local function cmp_setup()
     window = {
       completion = {
         -- winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None",
-        col_offset = 999,
+        -- col_offset = 999,
         side_padding = 0,
         border = "rounded",
       },
       documentation = {
+        show =false,
+        enable = false,
         -- col_offset = 999, -- big negative pushes window to far left
         -- row_offset = 999,  -- pushes doc window below
         -- max_width = 60,
@@ -23,9 +25,15 @@ local function cmp_setup()
     formatting = {
       fields = { "kind", "abbr", "menu" },
       format = function(entry, vim_item)
-        local kind = require("lspkind").cmp_format({ mode = "symbol_text", maxwidth = 50 })(entry, vim_item)
-        local strings = vim.split(kind.kind, "%s", { trimempty = true })
+        -- local tailwind_formatter = require("tailwindcss-colorizer-cmp").formatter
+        -- vim_item = tailwind_formatter(entry, vim_item)
 
+        local kind = require("lspkind").cmp_format({
+          mode = "symbol_text",
+          maxwidth = 50
+        })(entry, vim_item)
+
+        local strings = vim.split(kind.kind, "%s", { trimempty = true })
         kind.kind = " " .. (strings[1] or "") .. " │"
         kind.menu = "  " .. (strings[2] or "")
 
@@ -48,6 +56,13 @@ local function cmp_setup()
       { name = "luasnip", group_index = 2 },
       { name = "buffer", group_index = 2 },
       { name = "async_path", group_index = 2 },
+
+      { name = "laravel", group_index = 2 },
+      { name = "laravel-ls", group_index = 2 },
+      { name = "treesitter", group_index = 2 },
+      { name = "tmux", group_index = 2 },
+      { name = "calc", group_index = 2 },
+      { name = "emoji", group_index = 2 },
 
       -- I don't use these, but they are available
       -- and can be enabled if desired later

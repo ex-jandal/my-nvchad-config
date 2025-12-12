@@ -40,7 +40,7 @@ local M = {
     end,
     ["rust-analyzer"] = {
       cmd = vim.lsp.rpc.connect("127.0.0.1", 27631), -- use ra-multiplex instead of rust-analyzer
-      init_options ={
+      init_options = {
         lspMux = {
           version = "1",
           method = "connect",

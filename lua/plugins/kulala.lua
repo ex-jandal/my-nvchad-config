@@ -1,5 +1,5 @@
- return {
-   {
+return {
+  {
     "mistweaverco/kulala.nvim",
     lazy = false,
     ft = "http",
@@ -23,9 +23,13 @@
       { "<leader>RS", "<cmd>lua require('kulala').show_stats()<cr>", desc = "Show stats", ft = "http" },
       { "<leader>Rt", "<cmd>lua require('kulala').toggle_view()<cr>", desc = "Toggle headers/body", ft = "http" },
     },
-    opts = {},
+    opts = {
+      -- global_keymaps = false,
+      -- global_keymaps_prefix = "<leader>R",
+      -- kulala_keymaps_prefix = ""
+    },
     config = function()
       require("kulala").setup()
     end,
   },
- }
+}

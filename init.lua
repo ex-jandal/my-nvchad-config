@@ -25,42 +25,7 @@ require("lazy").setup({
   { import = "plugins" },
 }, lazy_config)
 
-require('code_runner').setup({
-  filetype = {
-    java = {
-      "cd $dir &&",
-      "gradle run"
-      -- "javac $fileName && java $fileNameWithoutExt",
-
-      -- "cd $dir && mvn compile exec:java"
-
-      -- "mvn clean install && java -cp target/${basename $PWD}.jar com.example.App"
-    },
-    python = "python3 -u",
-    typescript = "deno run",
-    rust = {
-      "cd $dir &&",
-      "rustc $fileName &&",
-      "$dir/$fileNameWithoutExt"
-    },
-    c = function(...)
-      c_base = {
-        "cd $dir &&",
-        "gcc $fileName -o",
-        "/tmp/$fileNameWithoutExt",
-      }
-      local c_exec = {
-        "&& /tmp/$fileNameWithoutExt &&",
-        "rm /tmp/$fileNameWithoutExt",
-      }
-      vim.ui.input({ prompt = "Add more args:" }, function(input)
-        c_base[4] = input
-        vim.print(vim.tbl_extend("force", c_base, c_exec))
-        require("code_runner.commands").run_from_fn(vim.list_extend(c_base, c_exec))
-      end)
-    end,
-  },
-})
+-- require "lua.configs.lspconfig"
 
 require('hovercraft').hover({ current_provider = "LSP" })
 require('hovercraft.provider.man')
@@ -69,44 +34,16 @@ require('hovercraft.provider.git.blame')
 
 require('livepreview.config').set()
 
- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-   vim.lsp.handlers.hover, {
-     -- Use a sharp border with `FloatBorder` highlights
-     border = "single",
-     -- add the title in hover float window
-     title = "hover"
-   }
- )
-
--- load theme
-dofile(vim.g.base46_cache .. "defaults")
-dofile(vim.g.base46_cache .. "statusline")
-
+-- vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+--  vim.lsp.handlers.hover, {
+--    -- Use a sharp border with `FloatBorder` highlights
+--    border = "single",
+--    -- add the title in hover float window
+--    title = "hover"
+--  }
+-- )
 
 vim.opt.smartindent = true -- Smart indentation for new lines
-
--- for vue.js 
-local luasnip = require 'luasnip'
-luasnip.filetype_extend("vue", { "javascript", "html", "css" })
-
--- for lorem
-require('lorem').opts {
-    sentence_length = "mixed",  -- using a default configuration
-    comma_chance = 0.3,  -- 30% chance to insert a comma
-    max_commas = 2  -- maximum 2 commas per sentence
-}
-
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics,
-  {
-      underline = true,
-      virtual_text = {
-          spacing = 5,
-          severity_limit = 'Warning',
-      },
-      update_in_insert = true,
-  }
-)
 
 require('nvim-ts-autotag').setup({
   opts = {
@@ -131,7 +68,7 @@ dofile(vim.g.base46_cache .. "statusline")
 
 require "options"
 require "autocmds"
-require("markdown")
+-- require("markdown")
 
 vim.schedule(function()
   require "mappings"

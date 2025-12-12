@@ -24,7 +24,7 @@ M.ui = {
     -- enabled = false,
     theme = "minimal",
     separator_style = "round",
-    -- order = { "mode", "f", "git", "%=", "lsp_msg", "%=", "lsp", "cwd", "xyz", "abc" },
+    -- order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "lsp", "cwd", "xyz", "abc" },
     -- modules = {
     --  abc = function()
     --    return "hi"

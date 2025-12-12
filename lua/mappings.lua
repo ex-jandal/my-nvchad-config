@@ -37,9 +37,8 @@ map(
 map("n", "<Leader>de", "<cmd>lua require'dap'.terminate()<CR>", merge_opts { desc = "Debugger reset" })
 map("n", "<Leader>dr", "<cmd>lua require'dap'.run_last()<CR>", merge_opts { desc = "Debugger run last" })
 
--- for codesnap
--- map("v", "<leader>cc", "<cmd>CodeSnap<cr>", merge_opts { desc = "Save selected code snapshot into clipboard" })
--- map("v", "<leader>cs", "<cmd>CodeSnapSave<cr>", merge_opts { desc = "Save selected code snapshot in ~/Pictures" })
+-- Undotree Toggle
+vim.keymap.set('n', '<leader>to', vim.cmd.UndotreeToggle, merge_opts { desc = "Toggle Undotree" })
 
 -- Don't yank on delete/change
 -- map("n", "d", '"_d', opts)
@@ -87,7 +86,7 @@ map("n", "<leader>jr", "<cmd> lua require('java').runner.built_in.run_app({})<CR
 map("n", "<Leader>cv", ":VimtexView<CR>", { noremap = true, silent = true, desc = "View PDF" })
 map("n", "<Leader>cq", ":VimtexStop<CR>", { noremap = true, silent = true, desc = "Stop VimTeX" })
 
-map("n", "<Leader>cc", "<CMD> w | silent ! latexmk -xelatex %<CR>", { noremap = true, silent = true, desc = "Vimtex Compile" })
+map("n", "<Leader>cc", "<CMD> w | silent ! latexmk -xelatex --pdf %<CR>", { noremap = true, silent = true, desc = "Vimtex Compile" })
 
 vim.keymap.set('n', '<leader>rr', ':RunCode<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>rf', ':RunFile<CR>', { noremap = true, silent = false })

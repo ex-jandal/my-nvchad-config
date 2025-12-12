@@ -7,4 +7,3 @@ o.cursorlineopt ='both' -- to enable cursorline!
 o.relativenumber = true
 o.breakindent = true
 o.conceallevel = 1;
-

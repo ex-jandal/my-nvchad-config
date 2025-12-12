@@ -24,7 +24,7 @@ local M = {
         hover = {
           bind = "K",
           wrap = true,
-          border = "none",
+          border = "rounded",
           position = "cursor",
         },
       },

@@ -1,159 +1,48 @@
-return {
-  {
-    "onsails/lspkind.nvim",
-    config = function()
-    -- setup() is also available as an alias
-    require('lspkind').init({
-      -- DEPRECATED (use mode instead): enables text annotations
-      --
-      -- default: true
-      -- with_text = true,
-
-      -- defines how annotations are shown
-      -- default: symbol
-      -- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
-      mode = 'symbol_text',
-
-      -- default symbol map
-      -- can be either 'default' (requires nerd-fonts font) or
-      -- 'codicons' for codicon preset (requires vscode-codicons font)
-      --
-      -- default: 'default'
-      preset = 'codicons',
-
-      -- override preset symbols
-      --
-      -- default: {}
-      symbol_map = {
-        Text = "󰉿",
-        Method = "󰆧",
-        Function = "󰊕",
-        Constructor = "",
-        Field = "󰜢",
-        Variable = "󰀫",
-        Class = "󰠱",
-        Interface = "",
-        Module = "",
-        Property = "󰜢",
-        Unit = "󰑭",
-        Value = "󰎠",
-        Enum = "",
-        Keyword = "󰌋",
-        Snippet = "",
-        Color = "󰏘",
-        File = "󰈙",
-        Reference = "󰈇",
-        Folder = "󰉋",
-        EnumMember = "",
-        Constant = "󰏿",
-        Struct = "󰙅",
-        Event = "",
-        Operator = "󰆕",
-        TypeParameter = "",
-        Copilot = "",
-        dapui_scopes = "",
-        dapui_breakpoints = "",
-        dapui_stacks = "",
-      },
-      PmenuSel = { bg = "#282C34", fg = "NONE" },
-      Pmenu = { fg = "#C5CDD9", bg = "#22252A" },
-
-      CmpItemAbbrDeprecated = { fg = "#7E8294", bg = "NONE", strikethrough = true },
-      CmpItemAbbrMatch = { fg = "#82AAFF", bg = "NONE", bold = true },
-      CmpItemAbbrMatchFuzzy = { fg = "#82AAFF", bg = "NONE", bold = true },
-      CmpItemMenu = { fg = "#C792EA", bg = "NONE", italic = true },
-
-      CmpItemKindField = { fg = "#EED8DA", bg = "#B5585F" },
-      CmpItemKindProperty = { fg = "#EED8DA", bg = "#B5585F" },
-      CmpItemKindEvent = { fg = "#EED8DA", bg = "#B5585F" },
-
-      CmpItemKindText = { fg = "#C3E88D", bg = "#9FBD73" },
-      CmpItemKindEnum = { fg = "#C3E88D", bg = "#9FBD73" },
-      CmpItemKindKeyword = { fg = "#C3E88D", bg = "#9FBD73" },
-
-      CmpItemKindConstant = { fg = "#FFE082", bg = "#D4BB6C" },
-      CmpItemKindConstructor = { fg = "#FFE082", bg = "#D4BB6C" },
-      CmpItemKindReference = { fg = "#FFE082", bg = "#D4BB6C" },
-
-      CmpItemKindFunction = { fg = "#EADFF0", bg = "#A377BF" },
-      CmpItemKindStruct = { fg = "#EADFF0", bg = "#A377BF" },
-      CmpItemKindClass = { fg = "#EADFF0", bg = "#A377BF" },
-      CmpItemKindModule = { fg = "#EADFF0", bg = "#A377BF" },
-      CmpItemKindOperator = { fg = "#EADFF0", bg = "#A377BF" },
-
-      CmpItemKindVariable = { fg = "#C5CDD9", bg = "#7E8294" },
-      CmpItemKindFile = { fg = "#C5CDD9", bg = "#7E8294" },
-
-      CmpItemKindUnit = { fg = "#F5EBD9", bg = "#D4A959" },
-      CmpItemKindSnippet = { fg = "#F5EBD9", bg = "#D4A959" },
-      CmpItemKindFolder = { fg = "#F5EBD9", bg = "#D4A959" },
-
-      CmpItemKindMethod = { fg = "#DDE5F5", bg = "#6C8ED4" },
-      CmpItemKindValue = { fg = "#DDE5F5", bg = "#6C8ED4" },
-      CmpItemKindEnumMember = { fg = "#DDE5F5", bg = "#6C8ED4" },
-
-      CmpItemKindInterface = { fg = "#D8EEEB", bg = "#58B5A8" },
-      CmpItemKindColor = { fg = "#D8EEEB", bg = "#58B5A8" },
-      CmpItemKindTypeParameter = { fg = "#D8EEEB", bg = "#58B5A8" },
-    })
-    end,
-  },
-  {
-    "sphamba/smear-cursor.nvim",
-      lazy = false,
-      opts = {
-        stiffness = 0.5,
-        trailing_stiffness = 0.49,
-        never_draw_over_target = false,
-        -- Smear cursor when switching buffers or windows.
-        smear_between_buffers = true,
-
-        -- Smear cursor when moving within line or to neighbor lines.
-        -- Use `min_horizontal_distance_smear` and `min_vertical_distance_smear` for finer control
-        smear_between_neighbor_lines = true,
-
-        -- Draw the smear in buffer space instead of screen space when scrolling
-        scroll_buffer_space = true,
-
-        -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
-        -- Smears will blend better on all backgrounds.
-        legacy_computing_symbols_support = true,
-
-        -- Smear cursor in insert mode.
-        -- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.
-        smear_insert_mode = true,
-    },
-  },
-
-  {
-    'nvim-mini/mini.animate',
-    lazy = false,
-    version = false,
-    config = function ()
-      require('mini.animate').setup({
-        cursor = {
-          -- Whether to enable this animation
-          enable = false,
-        },
-        scroll = {
-          -- Whether to enable this animation
-          enable = true,
-          timing = function ()
-            return 5
-          end,
-        },
-        open = {
-          -- Whether to enable this animation
-          enable = false,
-        },
-        close = {
-          -- Whether to enable this animation
-          enable = false,
-        }
-      })
+---@type table<number, {token:lsp.ProgressToken, msg:string, done:boolean}[]>
+local progress = vim.defaulttable()
+vim.api.nvim_create_autocmd("LspProgress", {
+  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+    if not client or type(value) ~= "table" then
+      return
     end
-  },
+    local p = progress[client.id]
 
+    for i = 1, #p + 1 do
+      if i == #p + 1 or p[i].token == ev.data.params.token then
+        p[i] = {
+          token = ev.data.params.token,
+          msg = ("[%3d%%] %s%s"):format(
+            value.kind == "end" and 100 or value.percentage or 100,
+            value.title or "",
+            value.message and (" **%s**"):format(value.message) or ""
+          ),
+          done = value.kind == "end",
+        }
+        break
+      end
+    end
+
+    local msg = {} ---@type string[]
+    progress[client.id] = vim.tbl_filter(function(v)
+      return table.insert(msg, v.msg) or not v.done
+    end, p)
+
+    local spinner = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ",
+                      " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }
+    vim.notify(table.concat(msg, "\n"), "info", {
+      id = "lsp_progress",
+      title = client.name,
+      opts = function(notif)
+        notif.icon = #progress[client.id] == 0 and "󰗠 "
+          or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+      end,
+    })
+  end,
+})
+return {
   {
     "nvim-tree/nvim-tree.lua",
     enabled = false, -- disable default file manager
@@ -188,6 +77,7 @@ return {
     opts = {
       bigfile = { enabled = true },
       dashboard = { enabled = true },
+      image = { enabled = true },
       explorer = { enabled = true },
       indent = { enabled = true },
       input = { enabled = true },
@@ -200,10 +90,11 @@ return {
       scope = { enabled = true },
       -- scroll = { enabled = true },
       -- statuscolumn = { enabled = true },
-      words = { enabled = true },
+      -- words = { enabled = true },
       styles = {
         notification = {
-          wo = { wrap = true } -- Wrap notifications
+          wo = { wrap = true }, -- Wrap notifications
+          ---@alias snacks.notifier.style snacks.notifier.render "fancy"
         },
       },
     },

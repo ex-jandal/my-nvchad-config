@@ -74,6 +74,7 @@ return {
         { name = 'oracle_neo', url = 'oracle://sultan:sultan@localhost/neo' },
         { name = 'Postgres_neo', url = 'postgresql://sultan:sultan@localhost:5433/neo'},
         { name = 'Postgres_karka-deh', url = 'postgresql://karka_deh:86400051@localhost:5432/karka_deh'},
+        { name = 'SQLite_neo', url = 'sqlite:///home/abu_jandal/project/sqlite3/neo.db'},
         -- { name = "surreal_local", url = "surreal://localhost:8000/test/test" },
         -- {
         --   name = 'surreal',
