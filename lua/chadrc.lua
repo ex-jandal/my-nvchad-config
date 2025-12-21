@@ -23,7 +23,7 @@ M.ui = {
   statusline = {
     -- enabled = false,
     theme = "minimal",
-    separator_style = "round",
+    separator_style = "block",
     -- order = { "mode", "file", "git", "%=", "lsp_msg", "%=", "lsp", "cwd", "xyz", "abc" },
     -- modules = {
     --  abc = function()

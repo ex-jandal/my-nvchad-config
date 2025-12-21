@@ -1,6 +1,6 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "marksman", "html", "cssls", "ts_ls", "vue-language-server", "tailwindcss-language-server", "svelte", "pyright", "texlab", "taplo", "clangd", "intelephense", "laravel-ls", "dcm", "bashls", "shellcheck", "fish_lsp", "asm-lsp", "tailwindcss", "omnisharp", "dockerls", "docker_compose_language_service", "nil_ls" }
+local servers = { "marksman", "html", "cssls", "ts_ls", "vue-language-server", "tailwindcss-language-server", "svelte", "pyright", "texlab", "taplo", "clangd", "intelephense", "laravel-ls", "dcm", "bashls", "shellcheck", "fish_lsp", "asm-lsp", "tailwindcss", "omnisharp", "dockerls", "docker_compose_language_service", "nil_ls", "zls" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers 
