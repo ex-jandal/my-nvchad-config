@@ -1,4 +1,6 @@
 local cmp = require('cmp')
+local lspkind = require("lspkind")
+
 local function cmp_setup()
   cmp.setup {
     viwe = {
@@ -24,24 +26,22 @@ local function cmp_setup()
     },
     formatting = {
       fields = { "kind", "abbr", "menu" },
-      format = function(entry, vim_item)
-        -- local tailwind_formatter = require("tailwindcss-colorizer-cmp").formatter
-        -- vim_item = tailwind_formatter(entry, vim_item)
+      format = function(_, vim_item)
+        local icon = lspkind.symbolic(vim_item.kind, {
+          mode = "symbol",
+          preset = "codicons",
+        })
 
-        local kind = require("lspkind").cmp_format({
-          mode = "symbol_text",
-          maxwidth = 50
-        })(entry, vim_item)
+        local text = vim_item.kind
 
-        local strings = vim.split(kind.kind, "%s", { trimempty = true })
-        kind.kind = " " .. (strings[1] or "") .. " │"
-        kind.menu = "  " .. (strings[2] or "")
+        vim_item.kind = " " .. icon .. " │"
+        vim_item.menu = " " .. text
 
-        return kind
+        return vim_item
       end,
     },
     experimental = {
-      ghost_text = true, -- <-- this shows ghost text inline
+      ghost_text = true,
     },
     sources = {
       -- datasbase auto completion

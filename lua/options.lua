@@ -6,4 +6,4 @@ local o = vim.o
 o.cursorlineopt ='both' -- to enable cursorline!
 o.relativenumber = true
 o.breakindent = true
-o.conceallevel = 1;
+-- o.conceallevel = 1;

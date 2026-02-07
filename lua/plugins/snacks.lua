@@ -4,11 +4,41 @@ vim.api.nvim_create_autocmd("LspProgress", {
   ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    local value = ev.data.params.value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
+    local value = ev.data.params
+    .value --[[@as {percentage?: number, title?: string, message?: string, kind: "begin" | "report" | "end"}]]
     if not client or type(value) ~= "table" then
       return
     end
     local p = progress[client.id]
+
+    --    header = [[
+    --   ▄▄         ▄ ▄▄▄▄▄▄▄
+    -- ▄▀███▄     ▄██ █████▀
+    -- ██▄▀███▄   ███
+    -- ███  ▀███▄ ███
+    -- ███    ▀██ ███
+    -- ███      ▀ ███
+    -- ▀██ █████▄▀█▀▄██████▄
+    --   ▀ ▀▀▀▀▀▀▀ ▀▀▀▀▀▀▀▀▀▀
+    --  Powered By  eovim]],
+    --  },
+
+    --    header = [[
+    --      ⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣤⣤⣴⢶⡶⣶⣴⣤⣤⡶⣶⣶⣶⣶⣦⣤⣄⠀⠀
+    --      ⠀⠀⠀⠀⣠⣴⣿⣻⠽⠿⠚⠙⠋⠛⠽⠷⣯⡿⣽⣻⢷⣻⣊⣰⡌⢻⣽⣷⠀
+    --      ⠀⠀⣠⣾⢿⠻⠊⠀⢀⣀⣀⣀⠀⠀⠀⠀⠀⠙⠿⣽⣻⣟⣿⠏⢠⣾⣷⣻⠇
+    --      ⠀⣴⡿⡯⠃⠀⠀⠀⢸⡿⣟⣿⣧⠀⠀⠀⠀⠀⠀⠘⢷⡿⣁⣐⣛⢳⣯⡟⠀
+    --      ⣰⡿⡟⠀⠀⠀⠀⠀⠀⠀⠈⣿⢾⡆⠀⠀⠀⠀⠀⠀⠈⢿⣟⡿⣽⣯⡟⠀⠀
+    --      ⣿⣻⠃⠀⠀⠀⠀⠀⠀⢀⣼⡿⣯⣿⡄⠀⠀⠀⠀⠀⠀⠸⣯⣿⣻⡾⠀⠀⠀
+    --      ⣿⣟⠀⠀⠀⠀⠀⠀⢀⣾⣯⡿⢻⣳⣷⡀⠀⠀⠀⠀⠀⠀⣿⣳⣿⠁⠀⠀⠀
+    --      ⣿⣽⡄⠀⠀⠀⠀⢠⣿⣻⡞⠀⠀⢻⣾⢧⠀⠀⠀⠀⠀⢰⣿⣻⠂⠀⠀⠀⠀
+    --      ⢹⣯⣷⡀⠀⠀⣰⡿⣯⠏⠀⠀⠀⠈⣿⢯⣷⡿⣇⠀⢀⣾⣟⠇⠀⠀⠀⠀⠀
+    --      ⠀⠻⡾⣷⣄⠀⠉⠉⠁⠀⠀⠀⠀⠀⠘⠛⠁⠁⠀⣠⣾⣟⠎⠀⠀⠀⠀⠀⠀
+    --      ⠀⠀⠙⢷⣟⣷⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣟⡷⠋⠀⠀⠀⠀⠀⠀⠀
+    --      ⠀⠀⠀⠀⠙⠳⢿⣻⢷⣶⣦⣤⣤⣴⣶⡾⣟⣯⠗⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    --      ⠀⠀⠀⠀⠀⠀⠀⠈⠉⠓⠛⠓⠋⠛⠚⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+    --  Powered By 󰂩 Bl󰘧ck Mesa]],
+    --  },
 
     for i = 1, #p + 1 do
       if i == #p + 1 or p[i].token == ev.data.params.token then
@@ -31,13 +61,13 @@ vim.api.nvim_create_autocmd("LspProgress", {
     end, p)
 
     local spinner = { " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ",
-                      " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }
+      " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " " }
     vim.notify(table.concat(msg, "\n"), "info", {
       id = "lsp_progress",
       title = client.name,
       opts = function(notif)
         notif.icon = #progress[client.id] == 0 and "󰗠 "
-          or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
+            or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
       end,
     })
   end,
@@ -605,8 +635,8 @@ return {
           Snacks.toggle.diagnostics():map "<leader>ud"
           Snacks.toggle.line_number():map "<leader>ul"
           Snacks.toggle
-            .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
-            :map "<leader>uc"
+              .option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 })
+              :map "<leader>uc"
           Snacks.toggle.treesitter():map "<leader>uT"
           Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }):map "<leader>ub"
           Snacks.toggle.inlay_hints():map "<leader>uh"

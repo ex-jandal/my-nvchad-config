@@ -70,7 +70,9 @@ return {
       vim.g.dbs = {
         -- { name = 'dev', url = 'postgres://postgres:mypassword@localhost:5432/my-dev-db' },
         -- { name = 'staging', url = 'postgres://postgres:mypassword@localhost:5432/my-staging-db' },
+
         { name = 'mariadb_neo', url = 'mariadb://sultan:sultan@localhost/neo' },
+        { name = 'PG_chatting_app', url = 'mariadb://pg_chatting_app:pg_chatting_app@localhost/pg_chatting_app' },
         { name = 'oracle_neo', url = 'oracle://sultan:sultan@localhost/neo' },
         { name = 'Postgres_neo', url = 'postgresql://sultan:sultan@localhost:5433/neo'},
         { name = 'Postgres_karka-deh', url = 'postgresql://karka_deh:86400051@localhost:5432/karka_deh'},

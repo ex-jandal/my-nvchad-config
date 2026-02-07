@@ -15,6 +15,7 @@ return {
         show_line_number = true,
         highlight_color = "#ffffff20",
         show_workspace = true,
+        scale_factor = 10,
         snapshot_config = {
           theme = "candy",
           window = {
@@ -36,8 +37,13 @@ return {
               color = "#ffffff",
               font_family = "Pacifico",
             },
+            size = {
+              x = 20,
+            }
           },
-          themes_folders = {},
+          themes_folders = {
+            "~/.config/codesnap/themes/",
+          },
           fonts_folders = {},
           line_number_color = "#495162",
           command_output_config = {
@@ -62,24 +68,24 @@ return {
             color = "#ffffff",
           },
           background = {
-            start = {
-              x = 0,
-              y = 0,
-            },
-            ["end"] = {
-              x = "max",
-              y = 0,
-            },
-            stops = {
-              {
-                position = 0,
-                color = "#6bcba500",
-              },
-              {
-                position = 1,
-                color = "#caf4c200",
-              },
-            },
+            -- start = {
+            --   x = 0,
+            --   y = 0,
+            -- },
+            -- ["end"] = {
+            --   x = "max",
+            --   y = 0,
+            -- },
+            -- stops = {
+            --   {
+            --     position = 0,
+            --     color = "#6bcba500",
+            --   },
+            --   {
+            --     position = 1,
+            --     color = "#caf4c200",
+            --   },
+            -- },
           },
         },
       })

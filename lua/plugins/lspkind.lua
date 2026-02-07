@@ -49,7 +49,7 @@ return {
         Struct = "󰙅",
         Event = "",
         Operator = "󰆕",
-        TypeParameter = "",
+        TypeParameter = "󰉺",
         Copilot = "",
         dapui_scopes = "",
         dapui_breakpoints = "",

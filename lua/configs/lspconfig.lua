@@ -1,9 +1,18 @@
 require("nvchad.configs.lspconfig").defaults()
 
-local servers = { "marksman", "html", "cssls", "ts_ls", "vue-language-server", "tailwindcss-language-server", "svelte", "pyright", "texlab", "taplo", "clangd", "intelephense", "laravel-ls", "dcm", "bashls", "shellcheck", "fish_lsp", "asm-lsp", "tailwindcss", "omnisharp", "dockerls", "docker_compose_language_service", "nil_ls", "zls" }
+require("mason").setup({
+  registries = {
+    "github:mason-org/mason-registry",
+    "github:Crashdummyy/mason-registry",
+  },
+})
+
+local servers = { "marksman", "html", "cssls", "ts_ls", "vue-language-server", "tailwindcss-language-server", "svelte",
+  "pyright", "texlab", "taplo", "clangd", "intelephense", "laravel-ls", "dcm", "bashls", "shellcheck", "fish_lsp",
+  "asm-lsp", "tailwindcss", "dockerls", "docker_compose_language_service", "nil_ls", "zls", "roslyn" }
 vim.lsp.enable(servers)
 
--- read :h vim.lsp.config for changing options of lsp servers 
+-- read :h vim.lsp.config for changing options of lsp servers
 
 ------------------------------------------------------------------------------------
 -- all of this is to make vue language server work with typescript language server
@@ -56,7 +65,8 @@ local vue_ls_config = {
       vim.list_extend(clients, vtsls_clients)
 
       if #clients == 0 then
-        vim.notify('Could not find `vtsls` or `ts_ls` lsp client, `vue_ls` would not work without it.', vim.log.levels.ERROR)
+        vim.notify('Could not find `vtsls` or `ts_ls` lsp client, `vue_ls` would not work without it.',
+          vim.log.levels.ERROR)
         return
       end
       local ts_client = clients[1]
@@ -71,14 +81,14 @@ local vue_ls_config = {
           payload,
         },
       }, { bufnr = context.bufnr }, function(_, r)
-          local response = r and r.body
-          -- TODO: handle error or response nil here, e.g. logging
-          -- NOTE: Do NOT return if there's an error or no response, just return nil back to the vue_ls to prevent memory leak
-          local response_data = { { id, response } }
+        local response = r and r.body
+        -- TODO: handle error or response nil here, e.g. logging
+        -- NOTE: Do NOT return if there's an error or no response, just return nil back to the vue_ls to prevent memory leak
+        local response_data = { { id, response } }
 
-          ---@diagnostic disable-next-line: param-type-mismatch
-          client:notify('tsserver/response', response_data)
-        end)
+        ---@diagnostic disable-next-line: param-type-mismatch
+        client:notify('tsserver/response', response_data)
+      end)
     end
   end,
 }
@@ -86,7 +96,7 @@ local vue_ls_config = {
 vim.lsp.config('vtsls', vtsls_config)
 vim.lsp.config('vue_ls', vue_ls_config)
 vim.lsp.config('ts_ls', ts_ls_config)
-vim.lsp.enable({'ts_ls', 'vue_ls'}) -- If using `ts_ls` replace `vtsls` to `ts_ls`
+vim.lsp.enable({ 'ts_ls', 'vue_ls' }) -- If using `ts_ls` replace `vtsls` to `ts_ls`
 
 ------------------------------------------------------------------------------------
 -- the end of vue language server with typescript language server config
@@ -109,15 +119,22 @@ vim.lsp.enable('fish_lsp')
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics,
   {
-      underline = true,
-      virtual_text = {
-          spacing = 5,
-          severity_limit = 'Warning',
-      },
-      update_in_insert = true,
+    underline = true,
+    virtual_text = {
+      spacing = 5,
+      severity_limit = 'Warning',
+    },
+    update_in_insert = true,
   }
 )
 
+-- vim.lsp.config['clangd'] = {
+--   init_options = {
+--
+--   }
+-- }
+-- vim.lsp.enable('clangd')
+--
 vim.lsp.config['asm_lsp'] = {
   cmd = { "asm-lsp" },
   filetypes = { "asm", "s", "S", "vmasm", "nasm" },
