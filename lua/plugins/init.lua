@@ -76,7 +76,8 @@ local M = {
         "codelldb",
         "jdtls",
         "java-debug-adapter",
-        "java-test"
+        "java-test",
+        "roslyn",
       },
     },
   },

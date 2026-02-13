@@ -2,7 +2,7 @@ return {
   {
     "mistweaverco/kulala.nvim",
     lazy = false,
-    ft = "http",
+    ft = {"http", "rest"},
     keys = {
       { "<leader>R", "", desc = "+Rest", ft = "http" },
       { "<leader>Rb", "<cmd>lua require('kulala').scratchpad()<cr>", desc = "Open scratchpad", ft = "http" },

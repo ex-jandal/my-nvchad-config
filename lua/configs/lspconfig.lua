@@ -9,7 +9,7 @@ require("mason").setup({
 
 local servers = { "marksman", "html", "cssls", "ts_ls", "vue-language-server", "tailwindcss-language-server", "svelte",
   "pyright", "texlab", "taplo", "clangd", "intelephense", "laravel-ls", "dcm", "bashls", "shellcheck", "fish_lsp",
-  "asm-lsp", "tailwindcss", "dockerls", "docker_compose_language_service", "nil_ls", "zls", "roslyn" }
+  "asm-lsp", "tailwindcss", "dockerls", "docker_compose_language_service", "nil_ls", "zls", "roslyn", "kulala-fmt" }
 vim.lsp.enable(servers)
 
 -- read :h vim.lsp.config for changing options of lsp servers

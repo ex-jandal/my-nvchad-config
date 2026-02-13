@@ -1,5 +1,4 @@
 local M = {
-
   {
     "saecki/crates.nvim",
     ft = { "toml" },
@@ -19,7 +18,7 @@ local M = {
 
   {
     "mrcjkb/rustaceanvim",
-    version = "^6",
+    version = "^7",
     lazy = false,
     ft = "rust",
     config = function()
@@ -39,10 +38,9 @@ local M = {
       }
     end,
     ["rust-analyzer"] = {
-      cmd = vim.lsp.rpc.connect("127.0.0.1", 27631), -- use ra-multiplex instead of rust-analyzer
       init_options = {
         lspMux = {
-          version = "1",
+          enable = true,
           method = "connect",
           server = "rust-analyzer",
         },

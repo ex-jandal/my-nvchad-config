@@ -77,6 +77,9 @@ return {
         { name = 'Postgres_neo', url = 'postgresql://sultan:sultan@localhost:5433/neo'},
         { name = 'Postgres_karka-deh', url = 'postgresql://karka_deh:86400051@localhost:5432/karka_deh'},
         { name = 'SQLite_neo', url = 'sqlite:///home/abu_jandal/project/sqlite3/neo.db'},
+        { name = 'MongoDB_art-social', url = 'mongodb://localhost:27017/art-social'},
+        { name = 'MongoDB_neo', url = 'mongodb://localhost:27017/neo'},
+        { name = 'Redis', url = 'redis://localhost:6379'},
         -- { name = "surreal_local", url = "surreal://localhost:8000/test/test" },
         -- {
         --   name = 'surreal',
